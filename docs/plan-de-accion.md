@@ -11,7 +11,7 @@ en [`plan-arquitectura.md`](plan-arquitectura.md)). Hoy es 23/09/2026, entrega
 |---|---|
 | LLM con tool calling | ✅ OpenAI (`gpt-4o-mini` generación, `gpt-4.1-nano` router), API key del curso cargada en `.env` |
 | Embeddings | ✅ `text-embedding-3-small` (mismo proveedor) |
-| Base vectorial (Pinecone/Qdrant/Chroma/FAISS) | ✅ Chroma, local y persistente — explícitamente permitida |
+| Base vectorial (Pinecone/Qdrant/Chroma/FAISS) | ⚠️ Pinecone elegido — falta crear cuenta y API key antes de implementar |
 | Dataset elegido de Kaggle sobre una temática | ✅ Multilingual Customer Support Tickets, en `data/dataset/` |
 | Papers/documentos largos de la cátedra | ✅ en `data/papers/` (6 PDFs) |
 | LangGraph, sin `create_agent()`/`create_react_agent()` | ✅ instalado (v1.2.12), grafo se arma a mano |
@@ -21,8 +21,11 @@ en [`plan-arquitectura.md`](plan-arquitectura.md)). Hoy es 23/09/2026, entrega
 | Inscripción y equipo en gestion.ort.edu.uy | ⚠️ trámite administrativo — lo tienen que hacer ustedes, yo no tengo acceso a ese sistema |
 | Fecha/tema de defensa oral | ⚠️ a coordinar con los docentes más adelante (16-27/11) |
 
-No falta nada técnico para arrancar. Lo único pendiente es lo administrativo
-(inscripción/equipo en Gestión) y coordinar la defensa cuando se acerque.
+Falta un solo bloqueante técnico: cuenta y API key de Pinecone (necesaria para
+embeber e indexar papers/dataset). Lo demás — loaders, chunking, el grafo en
+sí — se puede ir armando en paralelo sin esperarla. El resto de lo pendiente
+es administrativo (inscripción/equipo en Gestión) y coordinar la defensa
+cuando se acerque.
 
 ## Fases
 
@@ -30,14 +33,16 @@ No falta nada técnico para arrancar. Lo único pendiente es lo administrativo
 Repo, entorno, papers, dataset, plan de arquitectura.
 
 ### Fase 1 — RAG sobre papers
-- Loader de PDFs (`pypdf`) + chunking (tamaño/overlap a decidir y documentar).
-- Embeddings + colección Chroma dedicada a papers, persistida en disco.
+- Loader de PDFs (`pypdf`) + chunking (tamaño/overlap a decidir y documentar) —
+  no depende de Pinecone, se puede arrancar ya.
+- ⚠️ Embeddings + índice/namespace de Pinecone dedicado a papers — requiere
+  cuenta y API key de Pinecone.
 - Función/tool `buscar_papers(query)` con similarity search y umbral mínimo.
 - Probar recuperación con preguntas de ejemplo antes de conectar al grafo.
 
 ### Fase 2 — Dataset + tool calling
 - Carga del CSV elegido (`dataset-tickets-multi-lang3-4k.csv`) con pandas.
-- Colección Chroma separada para el dataset (texto: subject+body+answer).
+- Namespace/índice de Pinecone separado para el dataset (texto: subject+body+answer).
 - Tool `buscar_dataset(query)` (semántica) y tool `filtrar_tickets(...)` (pandas
   puro: por queue/priority/language/type — la acción real de tool calling que
   pide la consigna, evita que el LLM "calcule" mal).
@@ -99,5 +104,6 @@ es individual/eliminatoria, hay que poder explicar cualquier parte del código.
 
 ## Próximo paso inmediato
 
-Arrancar Fase 1 (RAG sobre papers) en el notebook, ya que no depende de
-ninguna decisión pendiente.
+1. Conseguir cuenta + API key de Pinecone (bloquea todo lo que sea embeddings/indexado).
+2. Mientras tanto, arrancar la parte de Fase 1 que no depende de eso: loader de
+   PDFs y chunking de los papers.

@@ -11,7 +11,6 @@ __pycache__/
 # Secrets / API keys
 .env
 .env.local
-!.env.example
 
 # Vector DB persistida en disco
 data/chroma/

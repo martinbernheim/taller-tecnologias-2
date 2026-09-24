@@ -16,8 +16,8 @@ Agentic RAG en LangGraph (sin `create_agent()` / `create_react_agent`, sin abstr
 
 **Multilingual Customer Support Tickets (Kaggle)** — tickets de soporte con columnas
 `subject`, `body`, `answer`, `type`, `queue`, `priority`, `language`, `business_type`,
-`tag_1..tag_9`. Archivos en `data/dataset/` (no versionados por peso, ver
-`data/dataset/README.md`).
+`tag_1..tag_9`. Archivo principal en `data/dataset/dataset-tickets-multi-lang3-4k.csv`
+(detalle de por qué ese y no otro en `data/dataset/README.md`).
 
 Por qué este dataset:
 
@@ -37,7 +37,7 @@ Por qué este dataset:
 |---|---|---|
 | LLM | **OpenAI GPT-4o-mini** (vía API) | Tool calling nativo confiable en LangGraph, barato para iterar mucho durante el desarrollo y en la defensa en vivo. Alternativa: Claude (Anthropic) — el diseño de grafo no cambia, solo el binding del modelo. |
 | Embeddings | `text-embedding-3-small` (OpenAI) | Barato, buena calidad, mismo proveedor que el LLM simplifica la integración. |
-| Vector DB | **Chroma** (local, persistente en disco) | No requiere infra externa ni cuenta en la nube, corre directo en el notebook, soporta metadata filtering (útil para filtrar por dataset vs. papers). |
+| Vector DB | **Pinecone** (cloud) — ⚠️ pendiente de implementar, falta crear cuenta/API key | Managed, soporta metadata filtering (útil para separar dataset vs. papers por namespace/filtro). Reemplaza la elección inicial de Chroma. |
 | Orquestación | **LangGraph** (grafo de estados manual, sin prebuilt agent) | Requisito explícito de la consigna. |
 | Memoria corto plazo | `MemorySaver` / checkpointer de LangGraph por `thread_id` | Permite pausar/retomar conversaciones sin perder contexto, uno por conversación. |
 | Memoria largo plazo | `InMemoryStore` de LangGraph (o persistido a disco/SQLite) namespaced por `user_id` | Compartida entre conversaciones del mismo usuario; el propio agente decide qué guardar vía una tool dedicada. |
@@ -48,7 +48,7 @@ Por qué este dataset:
 Nodos propuestos:
 
 1. **Router / clasificador de intención** — nodo LLM liviano (o el mismo LLM con un prompt de clasificación) que decide si la consulta es: (a) sobre el dataset, (b) sobre los papers, (c) pregunta general/small-talk, o (d) requiere recuperar memoria de largo plazo antes de responder.
-2. **Nodo de recuperación (retrieval)** — invocado como *tool*, no como paso fijo del grafo: el agente decide si llamar a `buscar_dataset(query)` o `buscar_papers(query)` según el router, cada una hace similarity search en su colección de Chroma correspondiente.
+2. **Nodo de recuperación (retrieval)** — invocado como *tool*, no como paso fijo del grafo: el agente decide si llamar a `buscar_dataset(query)` o `buscar_papers(query)` según el router, cada una hace similarity search en su índice/namespace de Pinecone correspondiente.
 3. **Nodo de memoria** — dos tools: `guardar_memoria(hecho)` (el LLM decide cuándo invocarla, p. ej. el usuario cuenta una preferencia) y `recuperar_memoria(query)` (búsqueda semántica sobre la memoria de largo plazo del `user_id`).
 4. **Nodo de generación** — arma la respuesta final combinando: mensajes de la conversación (memoria corto plazo), fragmentos recuperados (RAG), y memoria de largo plazo relevante. Prompt con instrucción explícita de "si no tenés información suficiente, decilo, no inventes".
 5. **Tool calling adicional** — al menos una tool de acción real más allá de RAG (ej: una función de filtrado/cálculo sobre el dataset, tipo `filtrar_autos(marca=None, precio_max=None, ...)` que corre pandas en vez de depender del LLM para aritmética — esto también ataca el punto de "control de alucinaciones").
@@ -76,9 +76,8 @@ Cada usuario tiene un `user_id`; cada conversación un `thread_id` (config de La
 
 ## 7. Próximos pasos
 
-1. Confirmar dataset definitivo (autos vs. otra alternativa) y buscar el link exacto en Kaggle.
-2. Confirmar LLM definitivo (OpenAI recomendado, o Anthropic si se prefiere).
-3. Armar el notebook: setup → carga y chunking de dataset + papers → embeddings + Chroma → grafo LangGraph (router, tools, memoria, generación) → pruebas → documentación dentro del propio notebook (markdown cells).
+1. ⚠️ Crear cuenta y API key de Pinecone (bloquea el nodo de recuperación).
+2. Armar el notebook: setup → carga y chunking de dataset + papers → embeddings + Pinecone → grafo LangGraph (router, tools, memoria, generación) → pruebas → documentación dentro del propio notebook (markdown cells).
 
 ---
 *Documento generado con asistencia de Claude (Anthropic), usado para estructurar la arquitectura y planificación del obligatorio. Debe citarse según las pautas de uso de IA del curso.*

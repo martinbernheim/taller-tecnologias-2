@@ -17,7 +17,7 @@ Entregable final: notebook Jupyter (.ipynb) funcional con outputs, más document
 ## Stack decidido
 - LLM: OpenAI — `gpt-4o-mini` para generación, `gpt-4.1-nano` para el router/clasificador (modelos habilitados por la key del curso)
 - Embeddings: OpenAI `text-embedding-3-small`
-- Vector DB: Chroma (local, persistente en disco)
+- Vector DB: **Pinecone** (cloud) — ⚠️ pendiente: crear cuenta y conseguir API key antes de poder implementarlo. Hasta entonces no hay código de vector DB escrito.
 - Orquestación: LangGraph (grafo manual)
 - Memoria corto plazo: checkpointer de LangGraph por `thread_id`
 - Memoria largo plazo: store namespaced por `user_id`

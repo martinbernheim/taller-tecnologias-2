@@ -27,8 +27,9 @@ notebook/ (o .ipynb en la raíz)   el desarrollo en sí — todavía no creado
 ```bash
 python -m venv .venv
 ./.venv/Scripts/pip install -r requirements.txt
-cp .env.example .env   # completar con la API key de OpenAI del curso
 ```
+
+Crear un archivo `.env` en la raíz con `OPENAI_API_KEY=...` (la key del curso, pedírsela a Martín o Matías).
 
 ## Por dónde arrancar
 
