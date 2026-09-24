@@ -15,21 +15,24 @@ Construir un **agentic RAG en LangGraph** (Python, sin `create_agent()` / `creat
 Entregable final: notebook Jupyter (.ipynb) funcional con outputs, más documentación (arquitectura, estrategia de memoria, prompts usados, desafíos, pruebas, reflexión, y nota de uso de IA generativa).
 
 ## Stack decidido
-- LLM: OpenAI GPT-4o-mini (a confirmar si se cambia a Anthropic Claude)
+- LLM: OpenAI — `gpt-4o-mini` para generación, `gpt-4.1-nano` para el router/clasificador (modelos habilitados por la key del curso)
 - Embeddings: OpenAI `text-embedding-3-small`
 - Vector DB: Chroma (local, persistente en disco)
 - Orquestación: LangGraph (grafo manual)
-- Memoria corto plazo: `MemorySaver` / checkpointer por `thread_id`
+- Memoria corto plazo: checkpointer de LangGraph por `thread_id`
 - Memoria largo plazo: store namespaced por `user_id`
 
 ## Dataset
-Propuesta: dataset de autos usados de Kaggle (marca, modelo, año, precio, km, combustible, etc.) — reutilizable como prototipo para Buscars / Werner Bernheim. Alternativa abierta: películas o libros. Ver `plan-arquitectura.md` para la justificación completa.
+**Multilingual Customer Support Tickets** (Kaggle) — tickets de soporte multi-idioma (en/de/es/fr/pt) con texto (subject/body/answer) y columnas estructuradas (queue, priority, type, business_type, tags). Archivo principal: `data/dataset/dataset-tickets-multi-lang3-4k.csv`. Justificación completa en `docs/plan-arquitectura.md`.
 
-## Arquitectura
-Ver `plan-arquitectura.md` en este mismo repo — es el plan de diseño completo (nodos del grafo, tools, estrategia anti-alucinación, documentación mínima requerida) acordado antes de escribir código. Seguilo como guía al implementar.
+## Arquitectura y plan
+- `docs/plan-arquitectura.md` — diseño completo (nodos del grafo, tools, estrategia anti-alucinación, documentación mínima requerida), acordado antes de escribir código. Seguirlo como guía al implementar.
+- `docs/plan-de-accion.md` — roadmap de ejecución por fases hasta la entrega.
+- `docs/consigna-obligatorio.pdf` — letra oficial del obligatorio.
 
 ## Cómo trabajar en este repo
 - Todo el desarrollo va en un notebook (`.ipynb`) en la raíz o en `notebook/`.
-- Cada decisión de diseño que se tome durante la implementación (y que no esté ya en `plan-arquitectura.md`) hay que documentarla en markdown dentro del propio notebook.
+- Cada decisión de diseño que se tome durante la implementación (y que no esté ya en `docs/plan-arquitectura.md`) hay que documentarla en markdown dentro del propio notebook.
 - Recordar: está prohibido usar `create_agent()`, `create_react_agent()` u otras abstracciones de alto nivel de LangGraph/LangChain que oculten la orquestación — el grafo, los nodos y el tool calling se arman a mano.
-- El paper/los papers del obligatorio y el dataset elegido van en una carpeta `data/` (no versionar el dataset completo si es pesado — dejar un script de descarga o instrucciones).
+- Los papers del obligatorio y el dataset elegido viven en `data/` y sí se versionan (el repo es privado): `data/papers/` y `data/dataset/`. `.env` con la API key nunca se versiona.
+- El paquete final que se sube a Gestión (límite 40MB) no debe incluir los PDFs/CSV crudos de `data/` — ver `docs/plan-de-accion.md`, fase de empaquetado.

@@ -36,7 +36,7 @@ Repo, entorno, papers, dataset, plan de arquitectura.
 - Probar recuperación con preguntas de ejemplo antes de conectar al grafo.
 
 ### Fase 2 — Dataset + tool calling
-- Carga del CSV elegido (`dataset-tickets-multi-lang-4-20k.csv`) con pandas.
+- Carga del CSV elegido (`dataset-tickets-multi-lang3-4k.csv`) con pandas.
 - Colección Chroma separada para el dataset (texto: subject+body+answer).
 - Tool `buscar_dataset(query)` (semántica) y tool `filtrar_tickets(...)` (pandas
   puro: por queue/priority/language/type — la acción real de tool calling que
