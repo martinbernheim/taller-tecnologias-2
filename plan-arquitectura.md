@@ -12,14 +12,24 @@ Agentic RAG en LangGraph (sin `create_agent()` / `create_react_agent`, sin abstr
 4. Soporte múltiples conversaciones y múltiples usuarios en paralelo, con tool calling.
 5. Distinga entre pregunta sobre documento, pregunta general y small-talk, y decida cómo responder en cada caso, evitando alucinar.
 
-## 2. Dataset (pendiente de elegir)
+## 2. Dataset elegido
 
-Todavía no está decidido. Candidatos en discusión:
+**Multilingual Customer Support Tickets (Kaggle)** — tickets de soporte con columnas
+`subject`, `body`, `answer`, `type`, `queue`, `priority`, `language`, `business_type`,
+`tag_1..tag_9`. Archivos en `data/dataset/` (no versionados por peso, ver
+`data/dataset/README.md`).
 
-- **Autos usados (Kaggle)** — p. ej. "Used Car Price Prediction Dataset" o "Vehicle Dataset from CarDekho" (link exacto a confirmar). A favor: reutilizable como prototipo de "asistente de catálogo" para herramientas propias existentes (API de MiAuto/Santander Consumer, Buscars/usadosseleccionados.uy, Werner Bernheim); dataset tabular con texto suficiente para justificar chunking + embeddings, y se presta bien a tool calling tipo filtrado (ej: "¿qué autos diésel hay por debajo de 15.000 dólares?").
-- **Películas o libros** — alternativa igual de válida según la consigna, sin mezclar con proyectos personales.
+Por qué este dataset:
 
-Falta cerrar esta decisión con el grupo antes de armar el chunking/RAG del dataset (el de los papers no depende de esto y ya se puede empezar).
+- Cada ticket tiene texto rico (asunto + cuerpo + respuesta) en varios idiomas, lo
+  que justifica chunking + embeddings + búsqueda semántica real (no un CSV
+  puramente numérico).
+- Las columnas estructuradas (`queue`, `priority`, `language`, `type`, `tags`) se
+  prestan directamente a tool calling con pandas: filtros y agregaciones tipo
+  "¿cuántos incidentes urgentes hay en la cola de Technical Support en alemán?"
+  sin que el LLM tenga que inventar el conteo.
+- Multi-idioma da pie a probar el pipeline de RAG con contenido en distintos
+  idiomas, un caso de uso realista para un chatbot de soporte.
 
 ## 3. Stack tecnológico
 
