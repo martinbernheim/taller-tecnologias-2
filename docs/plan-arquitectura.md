@@ -37,7 +37,7 @@ Por qué este dataset:
 |---|---|---|
 | LLM | **OpenAI GPT-4o-mini** (vía API) | Tool calling nativo confiable en LangGraph, barato para iterar mucho durante el desarrollo y en la defensa en vivo. Alternativa: Claude (Anthropic) — el diseño de grafo no cambia, solo el binding del modelo. |
 | Embeddings | `text-embedding-3-small` (OpenAI) | Barato, buena calidad, mismo proveedor que el LLM simplifica la integración. |
-| Vector DB | **Pinecone** (cloud) — ⚠️ pendiente de implementar, falta crear cuenta/API key | Managed, soporta metadata filtering (útil para separar dataset vs. papers por namespace/filtro). Reemplaza la elección inicial de Chroma. |
+| Vector DB | **Pinecone** (cloud) — decidido por el grupo; requiere `PINECONE_API_KEY` en `.env` | Managed, soporta metadata filtering (útil para separar dataset vs. papers por namespace/filtro). Reemplaza la elección inicial de Chroma. |
 | Orquestación | **LangGraph** (grafo de estados manual, sin prebuilt agent) | Requisito explícito de la consigna. |
 | Memoria corto plazo | `MemorySaver` / checkpointer de LangGraph por `thread_id` | Permite pausar/retomar conversaciones sin perder contexto, uno por conversación. |
 | Memoria largo plazo | `InMemoryStore` de LangGraph (o persistido a disco/SQLite) namespaced por `user_id` | Compartida entre conversaciones del mismo usuario; el propio agente decide qué guardar vía una tool dedicada. |

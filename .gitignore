@@ -16,6 +16,9 @@ __pycache__/
 data/chroma/
 data/*/chroma/
 
+# Material del curso: solo local, de referencia
+data/curso/
+
 # Sistema
 .DS_Store
 Thumbs.db

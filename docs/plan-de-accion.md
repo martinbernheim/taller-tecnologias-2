@@ -11,7 +11,7 @@ en [`plan-arquitectura.md`](plan-arquitectura.md)). Hoy es 23/09/2026, entrega
 |---|---|
 | LLM con tool calling | ✅ OpenAI (`gpt-4o-mini` generación, `gpt-4.1-nano` router), API key del curso cargada en `.env` |
 | Embeddings | ✅ `text-embedding-3-small` (mismo proveedor) |
-| Base vectorial (Pinecone/Qdrant/Chroma/FAISS) | ⚠️ Pinecone elegido — falta crear cuenta y API key antes de implementar |
+| Base vectorial (Pinecone/Qdrant/Chroma/FAISS) | ✅ Pinecone elegido; paquetes instalados, falta `PINECONE_API_KEY` en `.env` |
 | Dataset elegido de Kaggle sobre una temática | ✅ Multilingual Customer Support Tickets, en `data/dataset/` |
 | Papers/documentos largos de la cátedra | ✅ en `data/papers/` (6 PDFs) |
 | LangGraph, sin `create_agent()`/`create_react_agent()` | ✅ instalado (v1.2.12), grafo se arma a mano |
