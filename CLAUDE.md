@@ -15,9 +15,9 @@ Construir un **agentic RAG en LangGraph** (Python, sin `create_agent()` / `creat
 Entregable final: notebook Jupyter (.ipynb) funcional con outputs, más documentación (arquitectura, estrategia de memoria, prompts usados, desafíos, pruebas, reflexión, y nota de uso de IA generativa).
 
 ## Stack decidido
-- LLM: OpenAI — `gpt-4o-mini` para generación, `gpt-4.1-nano` para el router/clasificador (modelos habilitados por la key del curso)
+- LLM: OpenAI — `gpt-6-luna` para generación y router (la key del curso de nov-2026 solo habilita `gpt-6-luna` y `text-embedding-3-small`; `gpt-4o-mini` da 403 y `gpt-4.1-nano` está deprecado). Es un modelo que razona: no ponerle `max_tokens` chico o devuelve vacío.
 - Embeddings: OpenAI `text-embedding-3-small`
-- Vector DB: **Pinecone** (cloud) (decidido por el grupo). Falta `PINECONE_API_KEY` en `.env` para poder correrlo.
+- Vector DB: **Pinecone** (cloud) (decidido por el grupo). Índice `obligatorio-tt2` (1536 dims, coseno) con namespaces `papers` (618 chunks, ya indexado) y `tickets`.
 - Orquestación: LangGraph (grafo manual)
 - Memoria corto plazo: checkpointer de LangGraph por `thread_id`
 - Memoria largo plazo: store namespaced por `user_id`
