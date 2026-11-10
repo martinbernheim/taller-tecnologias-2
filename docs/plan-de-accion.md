@@ -9,9 +9,9 @@ en [`plan-arquitectura.md`](plan-arquitectura.md)). Hoy es 23/09/2026, entrega
 
 | Requisito de la consigna | Estado |
 |---|---|
-| LLM con tool calling | ✅ OpenAI (`gpt-4o-mini` generación, `gpt-4.1-nano` router), API key del curso cargada en `.env` |
+| LLM con tool calling | ✅ OpenAI `gpt-6-luna` (generación y router; es el único modelo de chat que habilita la key del curso de nov-2026), key en `.env` |
 | Embeddings | ✅ `text-embedding-3-small` (mismo proveedor) |
-| Base vectorial (Pinecone/Qdrant/Chroma/FAISS) | ✅ Pinecone elegido; paquetes instalados, falta `PINECONE_API_KEY` en `.env` |
+| Base vectorial (Pinecone/Qdrant/Chroma/FAISS) | ✅ Pinecone: índice `obligatorio-tt2` con namespaces `papers` (618 chunks) y `tickets` (4.000) |
 | Dataset elegido de Kaggle sobre una temática | ✅ Multilingual Customer Support Tickets, en `data/dataset/` |
 | Papers/documentos largos de la cátedra | ✅ en `data/papers/` (6 PDFs) |
 | LangGraph, sin `create_agent()`/`create_react_agent()` | ✅ instalado (v1.2.12), grafo se arma a mano |

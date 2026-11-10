@@ -35,7 +35,7 @@ Por qué este dataset:
 
 | Componente | Elección | Justificación |
 |---|---|---|
-| LLM | **OpenAI GPT-4o-mini** (vía API) | Tool calling nativo confiable en LangGraph, barato para iterar mucho durante el desarrollo y en la defensa en vivo. Alternativa: Claude (Anthropic) — el diseño de grafo no cambia, solo el binding del modelo. |
+| LLM | **OpenAI `gpt-6-luna`** (vía API; generación y router) | Era `gpt-4o-mini` + `gpt-4.1-nano` en el plan inicial, pero la key del curso de nov-2026 solo habilita `gpt-6-luna` (modelo que razona, con tool calling y salida estructurada). El diseño del grafo no depende del modelo. |
 | Embeddings | `text-embedding-3-small` (OpenAI) | Barato, buena calidad, mismo proveedor que el LLM simplifica la integración. |
 | Vector DB | **Pinecone** (cloud) — decidido por el grupo; requiere `PINECONE_API_KEY` en `.env` | Managed, soporta metadata filtering (útil para separar dataset vs. papers por namespace/filtro). Reemplaza la elección inicial de Chroma. |
 | Orquestación | **LangGraph** (grafo de estados manual, sin prebuilt agent) | Requisito explícito de la consigna. |
